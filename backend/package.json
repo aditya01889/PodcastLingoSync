@@ -11,6 +11,7 @@
     "node": ">=18"
   },
   "dependencies": {
+    "microsoft-cognitiveservices-speech-sdk": "^1.25.1",
     "axios": "^1.6.8",
     "cors": "^2.8.5",
     "express": "^4.18.2",
