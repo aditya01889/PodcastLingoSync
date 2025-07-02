@@ -118,7 +118,4 @@ function isStopWord(word) {
     return stopWords.has(word);
 }
 
-module.exports = {
-    generateSummary,
-    router
-};
+module.exports = router;
