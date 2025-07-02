@@ -145,7 +145,4 @@ router.post('/detect', async (req, res) => {
     }
 });
 
-module.exports = {
-    translate,
-    router
-};
+module.exports = router;
