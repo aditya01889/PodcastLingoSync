@@ -1,0 +1,20 @@
+{
+  "name": "workspace",
+  "version": "1.0.0",
+  "description": "A full-stack web application that uses Azure AI services to transcribe podcast audio files and translate the transcriptions into multiple languages.",
+  "main": "server.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start": "node server.js"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "cors": "^2.8.5",
+    "dotenv": "^17.0.1",
+    "express": "^4.19.2",
+    "microsoft-cognitiveservices-speech-sdk": "^1.44.1",
+    "multer": "^2.0.1"
+  }
+}
