@@ -4,7 +4,6 @@
   "description": "Backend for PodcastLingoSync - handles transcription, translation, and summarization APIs.",
   "author": "Aditya Srivastava",
   "main": "index.js",
-  "type": "module",
   "scripts": {
     "start": "node index.js"
   },
