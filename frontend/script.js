@@ -1,5 +1,5 @@
 // Backend API configuration
-const BACKEND_URL = window.location.origin;
+const BACKEND_URL = "https://podcastlingosync.onrender.com";
 
 class PodcastTranscriber {
     constructor() {
@@ -111,14 +111,14 @@ class PodcastTranscriber {
     async loadSupportedLanguages() {
         try {
             // Load transcription languages
-            const transcriptionResponse = await fetch(`${BACKEND_URL}/api/transcription/languages`);
+            const transcriptionResponse = await fetch(`${BACKEND_URL}/languages`);
             if (transcriptionResponse.ok) {
                 this.supportedLanguages = await transcriptionResponse.json();
                 this.populateLanguageSelect(this.sourceLanguageSelect, this.supportedLanguages);
             }
 
             // Load translation languages
-            const translationResponse = await fetch(`${BACKEND_URL}/api/translation/languages`);
+            const translationResponse = await fetch(`${BACKEND_URL}/languages`);
             if (translationResponse.ok) {
                 this.translationLanguages = await translationResponse.json();
                 this.populateLanguageSelect(this.targetLanguageText, this.translationLanguages, true);
@@ -367,7 +367,7 @@ class PodcastTranscriber {
             }
 
             try {
-                const response = await fetch(`/api/transcription/status/${this.currentJobId}`);
+                const response = await fetch(`${BACKEND_URL}/transcription/status/${this.currentJobId}`);
                 const status = await response.json();
 
                 if (!response.ok) {
@@ -416,7 +416,7 @@ class PodcastTranscriber {
 
     async translateText(text, targetLanguage) {
         try {
-            const response = await fetch('/api/translation/translate', {
+            const response = await fetch('${BACKEND_URL}/translate', {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json'
