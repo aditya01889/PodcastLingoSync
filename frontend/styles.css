@@ -43,6 +43,7 @@ header p {
 }
 
 /* Cards */
+.input-card,
 .upload-card,
 .progress-card,
 .results-card,
@@ -52,6 +53,78 @@ header p {
     padding: 30px;
     box-shadow: 0 20px 40px rgba(0, 0, 0, 0.1);
     margin-bottom: 30px;
+}
+
+/* Text Input Section */
+.text-input-section h2 {
+    color: #333;
+    margin-bottom: 25px;
+    font-size: 1.5rem;
+}
+
+.form-group textarea {
+    width: 100%;
+    padding: 15px;
+    border: 2px solid #ddd;
+    border-radius: 10px;
+    font-size: 1rem;
+    font-family: inherit;
+    resize: vertical;
+    min-height: 120px;
+    transition: border-color 0.3s ease;
+}
+
+.form-group textarea:focus {
+    outline: none;
+    border-color: #667eea;
+}
+
+.char-count {
+    display: block;
+    text-align: right;
+    margin-top: 5px;
+    font-size: 0.9rem;
+    color: #666;
+}
+
+.action-buttons {
+    display: flex;
+    gap: 15px;
+    flex-wrap: wrap;
+}
+
+/* Summary Content */
+.summary-content {
+    margin-bottom: 25px;
+}
+
+.summary-title,
+.summary-main,
+.summary-bullets {
+    margin-bottom: 20px;
+}
+
+.summary-title h5,
+.summary-main h5,
+.summary-bullets h5 {
+    color: #333;
+    margin-bottom: 10px;
+    font-size: 1.1rem;
+}
+
+.summary-title p {
+    font-size: 1.2rem;
+    font-weight: 600;
+    color: #667eea;
+}
+
+.summary-bullets ul {
+    margin-left: 20px;
+}
+
+.summary-bullets li {
+    margin-bottom: 8px;
+    line-height: 1.6;
 }
 
 /* Upload Section */

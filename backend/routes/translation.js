@@ -2,6 +2,50 @@ const express = require('express');
 const router = express.Router();
 const azureTranslator = require('../services/azureTranslator');
 
+// Direct translate endpoint (required format)
+const translate = async (req, res) => {
+    try {
+        const { transcript, target_language, source_language } = req.body;
+        const text = transcript || req.body.text; // Support both formats
+
+        if (!text || !text.trim()) {
+            return res.status(400).json({
+                error: 'No text provided',
+                message: 'Please provide text or transcript to translate'
+            });
+        }
+
+        if (!target_language) {
+            return res.status(400).json({
+                error: 'No target language specified',
+                message: 'Please specify a target_language for translation'
+            });
+        }
+
+        const translationResult = await azureTranslator.translateText(
+            text,
+            target_language,
+            source_language
+        );
+
+        res.json({
+            originalText: text,
+            translatedText: translationResult.translatedText,
+            sourceLanguage: translationResult.detectedLanguage || source_language,
+            targetLanguage: target_language,
+            confidence: translationResult.confidence,
+            timestamp: new Date().toISOString()
+        });
+
+    } catch (error) {
+        console.error('Translation error:', error);
+        res.status(500).json({
+            error: 'Translation failed',
+            message: error.message
+        });
+    }
+};
+
 // Translate text
 router.post('/translate', async (req, res) => {
     try {
@@ -101,4 +145,7 @@ router.post('/detect', async (req, res) => {
     }
 });
 
-module.exports = router;
+module.exports = {
+    translate,
+    router
+};

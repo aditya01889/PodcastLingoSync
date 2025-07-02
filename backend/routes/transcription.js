@@ -6,6 +6,66 @@ const fs = require('fs');
 const azureSpeech = require('../services/azureSpeech');
 const upload = require('../middleware/upload');
 
+// Direct transcribe-audio endpoint (required format)
+const transcribeAudio = async (req, res) => {
+    upload.single('audioFile')(req, res, async (err) => {
+        if (err) {
+            return res.status(400).json({
+                error: 'File upload error',
+                message: err.message
+            });
+        }
+
+        try {
+            if (!req.file) {
+                return res.status(400).json({
+                    error: 'No audio file provided',
+                    message: 'Please select an audio file to upload'
+                });
+            }
+
+            const filePath = req.file.path;
+            const language = req.body.language || 'en-US';
+
+            // Perform transcription directly (synchronous approach for direct endpoint)
+            const transcriptionResult = await azureSpeech.transcribeAudio(filePath, language);
+
+            // Clean up uploaded file
+            try {
+                fs.unlinkSync(filePath);
+            } catch (cleanupError) {
+                console.warn('Failed to cleanup file:', cleanupError.message);
+            }
+
+            res.json({
+                transcript: transcriptionResult.text,
+                confidence: transcriptionResult.confidence,
+                duration: transcriptionResult.duration,
+                language: language,
+                fileName: req.file.originalname,
+                timestamp: new Date().toISOString()
+            });
+
+        } catch (error) {
+            console.error('Transcription error:', error);
+            
+            // Clean up uploaded file on error
+            if (req.file) {
+                try {
+                    fs.unlinkSync(req.file.path);
+                } catch (cleanupError) {
+                    console.warn('Failed to cleanup file after error:', cleanupError.message);
+                }
+            }
+
+            res.status(500).json({
+                error: 'Transcription failed',
+                message: error.message
+            });
+        }
+    });
+};
+
 // Store transcription jobs in memory (in production, use a database)
 const transcriptionJobs = new Map();
 
@@ -134,4 +194,7 @@ async function processTranscription(jobId, filePath, language) {
     }
 }
 
-module.exports = router;
+module.exports = {
+    transcribeAudio,
+    router
+};
