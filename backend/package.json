@@ -1,0 +1,27 @@
+{
+  "name": "podcast-transcription-backend",
+  "version": "1.0.0",
+  "description": "Backend API server for podcast transcription and translation",
+  "main": "server.js",
+  "scripts": {
+    "start": "node server.js",
+    "dev": "node server.js"
+  },
+  "dependencies": {
+    "cors": "^2.8.5",
+    "dotenv": "^17.0.1",
+    "express": "^4.18.2",
+    "express-rate-limit": "^6.10.0",
+    "microsoft-cognitiveservices-speech-sdk": "^1.32.1",
+    "multer": "^1.4.5"
+  },
+  "keywords": [
+    "transcription",
+    "translation",
+    "azure",
+    "ai",
+    "podcast"
+  ],
+  "author": "",
+  "license": "MIT"
+}
