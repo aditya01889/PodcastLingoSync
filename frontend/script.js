@@ -111,7 +111,7 @@ class PodcastTranscriber {
     async loadSupportedLanguages() {
         try {
             // Load transcription languages
-            const transcriptionResponse = await fetch(`${BACKEND_URL}/languages`);
+            const transcriptionResponse = await fetch(`${BACKEND_URL}/transcribe/languages`);
             if (transcriptionResponse.ok) {
                 this.supportedLanguages = await transcriptionResponse.json();
                 this.populateLanguageSelect(this.sourceLanguageSelect, this.supportedLanguages);
@@ -163,7 +163,7 @@ class PodcastTranscriber {
             this.translateBtn.disabled = true;
             this.translateBtn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Translating...';
             
-            const response = await fetch(`${BACKEND_URL}/translate`, {
+            const response = await fetch(`${BACKEND_URL}/translate/translate`, {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json'
@@ -325,7 +325,7 @@ class PodcastTranscriber {
             this.updateProgressStep('step1', 'active');
             this.updateProgress(25, 'Uploading audio file...');
 
-            const response = await fetch(`${BACKEND_URL}/transcribe-audio`, {
+            const response = await fetch(`${BACKEND_URL}transcribe/transcribe-audio`, {
                 method: 'POST',
                 body: formData
             });
@@ -367,7 +367,7 @@ class PodcastTranscriber {
             }
 
             try {
-                const response = await fetch(`${BACKEND_URL}/transcription/status/${this.currentJobId}`);
+                const response = await fetch(`${BACKEND_URL}/transcribe/status/${this.currentJobId}`);
                 const status = await response.json();
 
                 if (!response.ok) {
@@ -416,7 +416,7 @@ class PodcastTranscriber {
 
     async translateText(text, targetLanguage) {
         try {
-            const response = await fetch('${BACKEND_URL}/translate', {
+            const response = await fetch('${BACKEND_URL}/translate/translate', {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json'
