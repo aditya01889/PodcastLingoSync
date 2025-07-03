@@ -106,6 +106,12 @@ class PodcastTranscriber {
 
         // Try again button
         this.tryAgainBtn.addEventListener('click', () => this.resetForm());
+
+        // Add event listener for target language dropdown to update Translate Text button state
+        this.targetLanguageText.addEventListener('change', () => {
+            const hasText = this.inputTranscript.value.trim().length > 0;
+            this.translateBtn.disabled = !hasText || !this.targetLanguageText.value;
+        });
     }
 
     async loadSupportedLanguages() {
