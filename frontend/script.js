@@ -175,8 +175,8 @@ class PodcastTranscriber {
                     'Content-Type': 'application/json'
                 },
                 body: JSON.stringify({
-                    transcript: text,
-                    target_language: targetLanguage
+                    text: text,
+                    targetLanguage: targetLanguage
                 })
             });
 
@@ -422,7 +422,7 @@ class PodcastTranscriber {
 
     async translateText(text, targetLanguage) {
         try {
-            const response = await fetch('${BACKEND_URL}/translate/translate', {
+            const response = await fetch(`${BACKEND_URL}/translate/translate`, {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json'
