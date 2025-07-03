@@ -316,7 +316,6 @@ class PodcastTranscriber {
         const formData = new FormData();
         const audioFile = this.audioFileInput.files[0];
         const sourceLanguage = this.sourceLanguageSelect.value;
-        const targetLanguage = this.targetLanguageSelect.value;
 
         if (!audioFile) {
             this.showError('Please select an audio file');
