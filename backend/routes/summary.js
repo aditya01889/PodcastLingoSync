@@ -118,4 +118,7 @@ function isStopWord(word) {
     return stopWords.has(word);
 }
 
+// Export the route
+router.post('/generate-summary', generateSummary);
+
 module.exports = router;

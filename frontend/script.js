@@ -211,7 +211,7 @@ class PodcastTranscriber {
             this.summaryBtn.disabled = true;
             this.summaryBtn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Generating...';
             
-            const response = await fetch(`${BACKEND_URL}/generate-summary`, {
+            const response = await fetch(`${BACKEND_URL}/summary/generate-summary`, {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json'
@@ -331,7 +331,7 @@ class PodcastTranscriber {
             this.updateProgressStep('step1', 'active');
             this.updateProgress(25, 'Uploading audio file...');
 
-            const response = await fetch(`${BACKEND_URL}transcribe/transcribe-audio`, {
+            const response = await fetch(`${BACKEND_URL}/transcribe/transcribe-audio`, {
                 method: 'POST',
                 body: formData
             });

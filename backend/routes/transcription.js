@@ -194,4 +194,7 @@ async function processTranscription(jobId, filePath, language) {
     }
 }
 
+// Export the routes
+router.post('/transcribe-audio', transcribeAudio);
+
 module.exports = router;
