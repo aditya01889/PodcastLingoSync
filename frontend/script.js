@@ -118,7 +118,7 @@ class PodcastTranscriber {
             }
 
             // Load translation languages
-            const translationResponse = await fetch(`${BACKEND_URL}/languages`);
+            const translationResponse = await fetch(`${BACKEND_URL}/translate/languages`);
             if (translationResponse.ok) {
                 this.translationLanguages = await translationResponse.json();
                 this.populateLanguageSelect(this.targetLanguageText, this.translationLanguages, true);
