@@ -1,5 +1,5 @@
 // Backend API configuration
-const BACKEND_URL = "https://podcastlingosync.onrender.com";
+const BACKEND_URL = "https://podcastlingosync-1.onrender.com";
 
 class PodcastTranscriber {
     constructor() {
