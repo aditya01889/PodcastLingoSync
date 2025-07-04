@@ -33,7 +33,12 @@ const rateLimitConfig = {
 };
 
 // Middleware
-app.use(cors());
+app.use(cors({
+    origin: ['http://localhost:3000', 'http://localhost:5000', 'http://127.0.0.1:3000', 'http://127.0.0.1:5000', 'https://podcast-lingo-sync-ddfwmiuhs.vercel.app'],
+    credentials: true,
+    methods: ['GET', 'POST', 'PUT', 'DELETE', 'OPTIONS'],
+    allowedHeaders: ['Content-Type', 'Authorization', 'X-Requested-With']
+}));
 app.use(express.json({ limit: '10mb' }));
 app.use(express.urlencoded({ extended: true, limit: '10mb' }));
 
@@ -79,6 +84,43 @@ app.post('/generate-summary', checkCharacterLimit, summaryRoutes.generateSummary
 // Additional API routes for compatibility
 app.use('/api/transcription', transcriptionRouter);
 app.use('/api/translation', translationRoutes.router);
+
+// Direct routes for frontend compatibility
+app.get('/transcribe/languages', (req, res) => {
+    const supportedLanguages = [
+        { code: 'en-US', name: 'English (US)' },
+        { code: 'en-GB', name: 'English (UK)' },
+        { code: 'es-ES', name: 'Spanish (Spain)' },
+        { code: 'es-MX', name: 'Spanish (Mexico)' },
+        { code: 'fr-FR', name: 'French (France)' },
+        { code: 'de-DE', name: 'German (Germany)' },
+        { code: 'it-IT', name: 'Italian (Italy)' },
+        { code: 'pt-BR', name: 'Portuguese (Brazil)' },
+        { code: 'ja-JP', name: 'Japanese (Japan)' },
+        { code: 'ko-KR', name: 'Korean (South Korea)' },
+        { code: 'zh-CN', name: 'Chinese (Simplified)' },
+        { code: 'zh-TW', name: 'Chinese (Traditional)' }
+    ];
+    res.json(supportedLanguages);
+});
+
+app.get('/translate/languages', (req, res) => {
+    const translationLanguages = [
+        { code: 'en', name: 'English' },
+        { code: 'es', name: 'Spanish' },
+        { code: 'fr', name: 'French' },
+        { code: 'de', name: 'German' },
+        { code: 'it', name: 'Italian' },
+        { code: 'pt', name: 'Portuguese' },
+        { code: 'ja', name: 'Japanese' },
+        { code: 'ko', name: 'Korean' },
+        { code: 'zh', name: 'Chinese (Simplified)' },
+        { code: 'ru', name: 'Russian' },
+        { code: 'ar', name: 'Arabic' },
+        { code: 'hi', name: 'Hindi' }
+    ];
+    res.json(translationLanguages);
+});
 
 // Health check endpoint
 app.get('/api/health', (req, res) => {
