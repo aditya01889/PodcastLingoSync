@@ -169,6 +169,9 @@ class AzureSpeechService {
                     }
                 }
                 
+                // Add this line for more details:
+                console.error('Azure error details:', e.errorDetails);
+                
                 recognizer.stopContinuousRecognitionAsync();
                 reject(new Error(errorMessage));
             };
