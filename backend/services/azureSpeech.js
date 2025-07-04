@@ -173,6 +173,7 @@ class AzureSpeechService {
                 console.error('Azure error details:', e.errorDetails);
                 
                 recognizer.stopContinuousRecognitionAsync();
+                console.error('Recognizer canceled event:', e);
                 reject(new Error(errorMessage));
             };
 
@@ -189,6 +190,9 @@ class AzureSpeechService {
 
         } catch (error) {
             console.error('Transcription service error:', error);
+            if (error && error.stack) {
+                console.error('Stack Trace:', error.stack);
+            }
             reject(error);
         }
     }
