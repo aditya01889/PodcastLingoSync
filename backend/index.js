@@ -1,3 +1,11 @@
+// Add global error handlers at the top
+process.on('uncaughtException', (err) => {
+  console.error('Uncaught Exception:', err);
+});
+process.on('unhandledRejection', (reason, promise) => {
+  console.error('Unhandled Rejection:', reason);
+});
+
 // Use CommonJS
 const express = require("express");
 const cors = require("cors");
