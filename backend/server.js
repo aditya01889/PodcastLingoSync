@@ -6,7 +6,8 @@ const fs = require('fs');
 require('dotenv').config();
 
 // Import route handlers
-const transcriptionRoutes = require('./routes/transcription');
+const transcriptionRouter = require('./routes/transcription');
+const transcribeAudio = transcriptionRouter.transcribeAudio;
 const translationRoutes = require('./routes/translation');
 const summaryRoutes = require('./routes/summary');
 
@@ -71,12 +72,12 @@ const checkCharacterLimit = (req, res, next) => {
 };
 
 // API Routes with required endpoints
-app.post('/transcribe-audio', transcriptionRoutes.transcribeAudio);
+app.post('/transcribe-audio', transcribeAudio);
 app.post('/translate', checkCharacterLimit, translationRoutes.translate);
 app.post('/generate-summary', checkCharacterLimit, summaryRoutes.generateSummary);
 
 // Additional API routes for compatibility
-app.use('/api/transcription', transcriptionRoutes.router);
+app.use('/api/transcription', transcriptionRouter);
 app.use('/api/translation', translationRoutes.router);
 
 // Health check endpoint

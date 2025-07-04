@@ -30,9 +30,10 @@ const transcribeAudio = async (req, res) => {
             // Perform transcription directly (synchronous approach for direct endpoint)
             const transcriptionResult = await azureSpeech.transcribeAudio(filePath, language);
 
-            // Clean up uploaded file
+            // Clean up uploaded file and converted files
             try {
                 fs.unlinkSync(filePath);
+                azureSpeech.cleanupConvertedFiles();
             } catch (cleanupError) {
                 console.warn('Failed to cleanup file:', cleanupError.message);
             }
@@ -49,18 +50,29 @@ const transcribeAudio = async (req, res) => {
         } catch (error) {
             console.error('Transcription error:', error);
             
-            // Clean up uploaded file on error
+            // Clean up uploaded file and converted files on error
             if (req.file) {
                 try {
                     fs.unlinkSync(req.file.path);
+                    azureSpeech.cleanupConvertedFiles();
                 } catch (cleanupError) {
                     console.warn('Failed to cleanup file after error:', cleanupError.message);
                 }
             }
 
+            // Provide more specific error messages
+            let errorMessage = error.message;
+            if (errorMessage.includes('Invalid WAV header') || errorMessage.includes('RIFF was not found')) {
+                errorMessage = 'The audio file format is not supported or the file is corrupted. Please try uploading a different audio file (MP3, WAV, M4A, etc.).';
+            } else if (errorMessage.includes('No speech detected')) {
+                errorMessage = 'No speech was detected in the audio file. Please ensure the file contains clear speech.';
+            } else if (errorMessage.includes('Authentication')) {
+                errorMessage = 'Speech recognition service authentication failed. Please contact support.';
+            }
+
             res.status(500).json({
                 error: 'Transcription failed',
-                message: error.message
+                message: errorMessage
             });
         }
     });
@@ -168,9 +180,10 @@ async function processTranscription(jobId, filePath, language) {
         job.completedTime = new Date();
         transcriptionJobs.set(jobId, job);
 
-        // Clean up uploaded file
+        // Clean up uploaded file and converted files
         try {
             fs.unlinkSync(filePath);
+            azureSpeech.cleanupConvertedFiles();
         } catch (cleanupError) {
             console.warn('Failed to cleanup file:', cleanupError.message);
         }
@@ -185,9 +198,10 @@ async function processTranscription(jobId, filePath, language) {
             transcriptionJobs.set(jobId, job);
         }
 
-        // Clean up uploaded file on error
+        // Clean up uploaded file and converted files on error
         try {
             fs.unlinkSync(filePath);
+            azureSpeech.cleanupConvertedFiles();
         } catch (cleanupError) {
             console.warn('Failed to cleanup file after error:', cleanupError.message);
         }
@@ -197,4 +211,6 @@ async function processTranscription(jobId, filePath, language) {
 // Export the routes
 router.post('/transcribe-audio', transcribeAudio);
 
+// Export the router as the main export and transcribeAudio as a property
 module.exports = router;
+module.exports.transcribeAudio = transcribeAudio;

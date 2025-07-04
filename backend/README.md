@@ -38,3 +38,68 @@ AZURE_TRANSLATOR_REGION=eastus
 - Rate limiting prevents abuse
 - File validation and cleanup
 - Secure environment variable handling
+
+## Audio Transcription Fixes
+
+### Issues Fixed
+
+1. **Invalid WAV Header Error**: Fixed the "Invalid WAV header in file, RIFF was not found" error by:
+   - Adding audio format conversion using ffmpeg-static
+   - Improving error handling for unsupported audio formats
+   - Adding better file validation in upload middleware
+
+2. **Route Registration Issue**: Fixed the incorrect route registration in server.js
+
+3. **File Cleanup**: Added proper cleanup for both uploaded and converted audio files
+
+### Supported Audio Formats
+
+The backend now supports the following audio formats:
+- WAV (native support)
+- MP3 (converted to WAV)
+- M4A (converted to WAV)
+- OGG (converted to WAV)
+- WebM (converted to WAV)
+- AAC (converted to WAV)
+- FLAC (converted to WAV)
+
+### Setup Instructions
+
+1. Install dependencies:
+   ```bash
+   npm install
+   ```
+
+2. Set up environment variables:
+   ```bash
+   AZURE_SPEECH_KEY=your_azure_speech_key
+   AZURE_SPEECH_REGION=your_azure_region
+   AZURE_TRANSLATOR_KEY=your_azure_translator_key
+   AZURE_TRANSLATOR_REGION=your_azure_region
+   ```
+
+3. Start the server:
+   ```bash
+   npm start
+   ```
+
+### Testing
+
+1. Upload an audio file through the frontend
+2. Check the console logs for debugging information
+3. The system will automatically convert non-WAV files to WAV format
+4. Transcription results will be displayed in the frontend
+
+### Error Handling
+
+The system now provides more specific error messages:
+- File format not supported
+- Audio file corrupted
+- No speech detected
+- Authentication issues
+
+### Dependencies Added
+
+- `ffmpeg-static`: For audio format conversion
+- Improved error handling and file validation
+- Better debugging and logging

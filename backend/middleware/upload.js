@@ -40,11 +40,22 @@ const fileFilter = (req, file, cb) => {
     const allowedExtensions = ['.mp3', '.wav', '.ogg', '.webm', '.mp4', '.m4a', '.aac', '.flac'];
     const fileExtension = path.extname(file.originalname).toLowerCase();
 
-    if (allowedMimeTypes.includes(file.mimetype) || allowedExtensions.includes(fileExtension)) {
-        cb(null, true);
-    } else {
-        cb(new Error(`Unsupported file format. Supported formats: ${allowedExtensions.join(', ')}`), false);
+    // Check if file has a valid extension
+    if (!allowedExtensions.includes(fileExtension)) {
+        return cb(new Error(`Unsupported file format. Supported formats: ${allowedExtensions.join(', ')}`), false);
     }
+
+    // Check if file has a valid MIME type (but be more lenient as MIME types can be unreliable)
+    if (file.mimetype && !allowedMimeTypes.includes(file.mimetype)) {
+        console.warn(`File ${file.originalname} has unexpected MIME type: ${file.mimetype}, but allowing based on extension`);
+    }
+
+    // Additional validation for file size
+    if (file.size === 0) {
+        return cb(new Error('File is empty'), false);
+    }
+
+    cb(null, true);
 };
 
 // Configure multer
